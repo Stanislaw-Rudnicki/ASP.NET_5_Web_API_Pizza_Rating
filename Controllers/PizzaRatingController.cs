@@ -29,7 +29,9 @@ namespace WebApplication9_Pizza_json.Controllers
 
             foreach (var group in groups)
             {
-                rating.Add(new Pizza() { Orders = group.Count(), Toppings = group.FirstOrDefault().Toppings });
+                Pizza p = group.FirstOrDefault();
+                p.Orders = group.Count();
+                rating.Add(p);
             }
 
             watch.Stop();
