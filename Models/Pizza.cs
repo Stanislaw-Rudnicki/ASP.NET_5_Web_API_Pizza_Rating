@@ -9,20 +9,13 @@ namespace WebApplication9_Pizza_json.Models
         {
             get
             {
-                if (Toppings.Count == 0)
+                string name = "";
+                Toppings.Sort();
+                foreach (var topping in Toppings)
                 {
-                    return "";
+                    name += topping.Length < 2 ? topping : topping[..2];
                 }
-                else
-                {
-                    string name = "";
-                    Toppings.Sort();
-                    foreach (var topping in Toppings)
-                    {
-                        name += topping.Length < 2 ? topping : topping[..2];
-                    }
-                    return name;
-                }
+                return name;
             }
         }
         

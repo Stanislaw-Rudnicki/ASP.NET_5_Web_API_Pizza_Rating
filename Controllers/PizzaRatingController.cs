@@ -25,13 +25,25 @@ namespace WebApplication9_Pizza_json.Controllers
             var watch = Stopwatch.StartNew();
 
             List<Pizza> rating = new();
-            var groups = pizzas.GroupBy(p => p.Name).OrderByDescending(g => g.Count()).Take(10);
+
+            // Тут можна було б групувати по назві піци, яка складається
+            // з перших двох літер кожного топінгу, що входить до складу піци,
+            // але зустрічаються разні топінги, які починаються на однакові літери,
+            // наприклад: cheddar cheese, chicken; salami, sausage.
+            // Тому групувати необхідно по рядку утвореному з повних назв топінгів.
+
+            var groups = pizzas
+                .GroupBy(p => {
+                    p.Toppings.Sort();
+                    return string.Join("", p.Toppings);
+                })
+                .OrderByDescending(g => g.Count())
+                .Take(10);
 
             foreach (var group in groups)
             {
-                Pizza p = group.FirstOrDefault();
-                p.Orders = group.Count();
-                rating.Add(p);
+                group.FirstOrDefault().Orders = group.Count();
+                rating.Add(group.FirstOrDefault());
             }
 
             watch.Stop();
